@@ -9,6 +9,7 @@
  */
 var ChordView = ChordView || (function() {
 
+    // Class definition
     class self {
 
         /**
@@ -648,6 +649,7 @@ var ChordView = ChordView || (function() {
      */
     self._canvas = null;
 
+    // Class export
     return self;
 
 })();
