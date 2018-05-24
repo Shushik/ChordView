@@ -1,5 +1,9 @@
 /**
- * Guitar chords viewer based on Canvas
+ * Guitar chords viewer based on <canvas>
+ *
+ * @author Shushik <silkleopard@yandex.ru>
+ * @version 3.0
+ * @license MIT
  *
  * @class ChordView
  */
