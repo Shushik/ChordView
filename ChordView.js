@@ -13,36 +13,214 @@ var ChordView = ChordView || (function() {
     class self {
 
         /**
-         * @constructor
-         *
-         * @param {object} args
+         * @static
+         * @const {number} NUT_LEFT
          */
-        constructor(args = {}) {
-            // No need to go further
-            if (typeof args != 'object') {
-                throw new TypeError('Config should be an object');
-            }
-
-            // Create main stacks
-            this._data = {};
-
-            // Init main stacks
-            this._init(args);
-            this.copy(args.root, {id : args.id, cname : args.cname});
+        static get NUT_LEFT() {
+            return 3;
         }
 
         /**
-         * Turn arabic number into roman
-         *
          * @static
-         * @private
-         * @method _romanize
+         * @const {number} NUT_LEFT
+         */
+        static get NUT_LETTER() {
+            return 5;
+        }
+
+        /**
+         * @static
+         * @const {string} NUT_FONT
+         */
+        static get NUT_FONT() {
+            return 'normal 6pt Verdana';
+        }
+
+        /**
+         * @static
+         * @const {string} NUT_COLOR
+         */
+        static get NUT_COLOR() {
+            return 'rgba(0, 0, 0, 1)';
+        }
+
+        /**
+         * @static
+         * @const {number} FRET_WIDTH
+         */
+        static get FRET_WIDTH() {
+            return 1;
+        }
+
+        /**
+         * @static
+         * @const {number} FRET_HEIGHT
+         */
+        static get FRET_HEIGHT() {
+            return 8;
+        }
+
+        /**
+         * @static
+         * @const {string} FRET_COLOR
+         */
+        static get FRET_COLOR() {
+            return 'rgba(0, 0, 0, 0.5)';
+        }
+
+        /**
+         * @static
+         * @const {number} FRETS_LIMIT
+         */
+        static get FRETS_LIMIT() {
+            return 5;
+        }
+
+        /**
+         * @static
+         * @const {number} TITLE_TOP
+         */
+        static get TITLE_TOP() {
+            return 6.5;
+        }
+
+        /**
+         * @static
+         * @const {number} TITLE_BOTTOM
+         */
+        static get TITLE_BOTTOM() {
+            return 10;
+        }
+
+        /**
+         * @static
+         * @const {string} TITLE_FONT
+         */
+        static get TITLE_FONT() {
+            return 'normal 8.5pt Times';
+        }
+
+        /**
+         * @static
+         * @const {string} TITLE_COLOR
+         */
+        static get TITLE_COLOR() {
+            return 'rgba(0, 0, 0, 1)';
+        }
+
+        /**
+         * @static
+         * @const {number} CANVAS_TOP
+         */
+        static get CANVAS_TOP() {
+            return 0;
+        }
+
+        /**
+         * @static
+         * @const {number} CANVAS_LEFT
+         */
+        static get CANVAS_LEFT() {
+            return 5;
+        }
+
+        /**
+         * @static
+         * @const {number} CANVAS_RIGHT
+         */
+        static get CANVAS_RIGHT() {
+            return 5;
+        }
+
+        /**
+         * @static
+         * @const {number} CANVAS_BOTTOM
+         */
+        static get CANVAS_BOTTOM() {
+            return 0;
+        }
+
+        /**
+         * @static
+         * @const {string} CANVAS_BACKGROUND
+         */
+        static get CANVAS_BACKGROUND() {
+            return 'transparent';
+        }
+
+        /**
+         * @static
+         * @const {number} FINGER_RADIUS
+         */
+        static get FINGER_RADIUS() {
+            return 2;
+        }
+
+        /**
+         * @static
+         * @const {string} FINGER_COLOR
+         */
+        static get FINGER_COLOR() {
+            return 'rgba(0, 0, 0, 1)';
+        }
+
+        /**
+         * @static
+         * @const {number} STRING_TOP
+         */
+        static get STRING_TOP() {
+            return -4;
+        }
+
+        /**
+         * @static
+         * @const {number} STRING_SPAN
+         */
+        static get STRING_SPAN() {
+            return 5;
+        }
+
+        /**
+         * @static
+         * @const {number} STRING_WIDTH
+         */
+        static get STRING_WIDTH() {
+            return 1;
+        }
+
+        /**
+         * @static
+         * @const {string} STRING_FONT
+         */
+        static get STRING_FONT() {
+            return 'normal 5pt Verdana';
+        }
+
+        /**
+         * @static
+         * @const {string} STRING_COLOR
+         */
+        static get STRING_COLOR() {
+            return 'rgba(51, 51, 51, 0.5)';
+        }
+
+        /**
+         * @static
+         * @const {object} STRINGS_TUNE
+         */
+        static get STRINGS_TUNE() {
+            return ['E', 'B', 'G', 'D', 'A', 'E'];
+        }
+
+        /**
+         * @static
+         * @method romanize
          *
          * @param {number}
          *
          * @returns {string}
          */
-        static _romanize(arabic) {
+        static romanize(arabic) {
             if (typeof arabic != 'number' || arabic < 1) {
                 return '';
             }
@@ -68,105 +246,37 @@ var ChordView = ChordView || (function() {
         }
 
         /**
-         * Copy image from <canvas> to <img>
+         * @constructor
          *
-         * @private
-         * @method _copy
-         *
-         * @param {string|object} to
-         * @param {object=}       attrs
-         *
-         * @returns {object}
+         * @param {object} args
          */
-        _copy(to, attrs) {
-            to = to instanceof HTMLElement ?
-                 to :
-                 document.querySelector(to);
-
-            var
-                img = document.createElement('img');
-
-            // Create image DOM node
-            img.src    = this.encode();
-            img.alt    = this._data.title;
-            img.title  = this._data.title;
-            img.width  = this._data.width;
-            img.height = this._data.height;
-
-            // Add id or class attributes if given
-            if (attrs) {
-                if (attrs.id) {
-                    img.id = attrs.id;
-                }
-
-                if (attrs.cname) {
-                    img.className = attrs.cname;
-                }
+        constructor(args = {}) {
+            // No need to go further
+            if (typeof args != 'object') {
+                throw new Error('Config should be an object');
+            } else if (!(args.root instanceof HTMLElement)) {
+                throw new Error('Root DOM node for chord doesn`t exist');
             }
 
-            // Save image if parent node is given
-            if (to) {
-                to.appendChild(img);
-            }
+            // Create data stack
+            this._data = {};
 
-            return img;
+            // Create canvas stack
+            this._canvas = {};
+
+            // Init main stacks
+            this._init(args);
+            this._draw(args);
         }
 
         /**
-         * Init DOM stack
-         *
-         * @private
-         * @method _draw
-         */
-        _draw() {
-            var
-                node = null;
-
-            if (!self._canvas) {
-                // Init canvas DOM node
-                self._canvas = document.createElement('canvas')
-                self._canvas.width  = this._data.width;
-                self._canvas.height = this._data.height;
-
-                self._canvas.style.top      = '-9000px';
-                self._canvas.style.left     = '-9000px';
-                self._canvas.style.position = 'fixed';
-
-                // Save canvas DOM node
-                document.body.appendChild(self._canvas);
-            }
-
-            // Get canvas context
-            this._canvas = self._canvas.getContext('2d');
-            this._canvas.clearRect(0, 0, this._data.width, this._data.height);
-
-            // Fill canvas with a background color
-            if (self._conf.canvas.background && self._conf.canvas.background != 'transparent') {
-                this._canvas.fillStyle = self._conf.canvas.background;
-                this._canvas.fillRect(0, 0, this._data.width, this._data.height);
-            }
-
-            // Draw neck and hand
-            this._drawNut();
-            this._drawTitle();
-            this._drawFrets();
-            this._drawStrings();
-            this._drawChord();
-
-            // Remove canvas context link
-            delete this._canvas;
-        }
-
-        /**
-         * Init data stack
-         *
          * @private
          * @method _init
          *
          * @param {object} args
          */
         _init(args) {
-            if (args.title) {
+            if (args.title && typeof args.title == 'string') {
                 this._initTitle(args.title);
             }
 
@@ -177,49 +287,160 @@ var ChordView = ChordView || (function() {
         }
 
         /**
-         * Draw first fret number
+         * @private
+         * @method _draw
          *
+         * @param {object} args
+         */
+        _draw(args) {
+            var
+                al0 = '';
+
+            // Init canvas DOM
+            if (!this._canvas.node) {
+                this._canvas.node = document.createElement('canvas');
+                this._canvas.node.width  = this._data.width;
+                this._canvas.node.height = this._data.height;
+
+                args.root.appendChild(this._canvas.node);
+
+                // Add className
+                if (args.id) {
+                    this._canvas.node.id = args.id;
+                }
+
+                // Add className
+                if (args.cname) {
+                    this._canvas.node.className = args.cname;
+                }
+
+                // Add data-attributes
+                if (args.data && typeof args.data == 'object') {
+                    for (k in args.data) {
+                        this._canvas.node.setAttribute('data-' + al0, args.data[al0]);
+                    }
+                }
+            }
+
+            // Get canvas context
+            this._canvas.ctx = this._canvas.node.getContext('2d');
+            this._canvas.ctx.clearRect(0, 0, this._data.width, this._data.height);
+
+            // Fill canvas with a background color
+            if (self.CANVAS_BACKGROUND && self.CANVAS_BACKGROUND != 'transparent') {
+                this._canvas.ctx.fillStyle = self.CANVAS_BACKGROUND;
+                this._canvas.ctx.fillRect(0, 0, this._data.width, this._data.height);
+            }
+
+            // Draw neck and hand
+            this._drawNut();
+            this._drawTitle();
+            this._drawFrets();
+            this._drawStrings();
+            this._drawChord();
+        }
+
+        /**
          * @private
          * @method _drawNut
          */
         _drawNut() {
-            if (this._data.nut) {
-                this._canvas.font         = self._conf.nut.font;
-                this._canvas.textAlign    = 'left';
-                this._canvas.fillStyle    = self._conf.nut.color;
-                this._canvas.textBaseline = 'top';
+            var
+                top = 0,
+                suffix = 0;
 
-                this._canvas.fillText(
-                    this._data.nut - (this._data.dislocate ? 1 : 0),
-                    this._data.right + self._conf.nut.left,
-                    this._data.top
-                );
+            if (this._data.nut) {
+                if (
+                    this._data.frets[0] === '' ||
+                    (this._data.dislocate && this._data.frets[0] === 'I')
+                ) {
+                    // Draw nut line
+                    top = this._data.top + 0 * self.FRET_HEIGHT;
+                    suffix = top % 2 ? 0 : 0.5;
+
+                    this._canvas.ctx.beginPath();
+                    this._canvas.ctx.moveTo(this._data.left, top + suffix - 1);
+                    this._canvas.ctx.lineTo(this._data.right, top + suffix - 1);
+                    this._canvas.ctx.lineWidth = self.FRET_WIDTH;
+                    this._canvas.ctx.strokeStyle = self.FRET_COLOR;
+                    this._canvas.ctx.stroke();
+                } else {
+                    // Draw fret number
+                    this._canvas.ctx.font = self.NUT_FONT;
+                    this._canvas.ctx.textAlign = 'left';
+                    this._canvas.ctx.fillStyle = self.NUT_COLOR;
+                    this._canvas.ctx.textBaseline = 'top';
+                    this._canvas.ctx.fillText(
+                        this._data.nut - (this._data.dislocate ? 1 : 0),
+                        this._data.right + self.NUT_LEFT,
+                        this._data.top
+                    );
+                }
             }
         }
 
         /**
-         * Draw fret
-         *
          * @private
          * @method _drawFret
+         *
+         * @param {number} pos
          */
-        _drawFret(pos = 0, name = '') {
+        _drawFret(pos = 0) {
             var
-                num    = pos + 1,
-                top    = this._data.top + pos * self._conf.fret.height,
+                num = pos + 1,
+                top = this._data.top + pos * self.FRET_HEIGHT,
                 suffix = top % 2 ? 0 : 0.5;
 
-            this._canvas.beginPath();
-            this._canvas.moveTo(this._data.left, top + suffix);
-            this._canvas.lineTo(this._data.right, top + suffix);
-            this._canvas.lineWidth = 1;
-            this._canvas.strokeStyle = self._conf.fret.color;
-            this._canvas.stroke();
+            this._canvas.ctx.beginPath();
+            this._canvas.ctx.moveTo(this._data.left, top + suffix);
+            this._canvas.ctx.lineTo(this._data.right, top + suffix);
+            this._canvas.ctx.lineWidth = self.FRET_WIDTH;
+            this._canvas.ctx.strokeStyle = self.FRET_COLOR;
+            this._canvas.ctx.stroke();
         }
 
         /**
-         * Init chord data
+         * @private
+         * @method _drawBarre
          *
+         * @param {number} pos
+         * @param {object} data
+         */
+        _drawBarre(pos = 0, data = {}) {
+            var
+                to = data.to - this._data.nut + 1,
+                top = this._data.top + to * self.FRET_HEIGHT - self.FRET_HEIGHT / 2,
+                suffix = top % 2 ? 0.5 : 0;
+
+            this._canvas.ctx.beginPath();
+            this._canvas.ctx.moveTo(this._data.left, top + suffix);
+            this._canvas.ctx.lineTo(this._data.right, top + suffix);
+            this._canvas.ctx.lineWidth = self.FINGER_RADIUS;
+            this._canvas.ctx.strokeStyle = self.FINGER_COLOR;
+            this._canvas.ctx.stroke();
+        }
+
+        /**
+         * @private
+         * @method _drawChord
+         */
+        _drawChord() {
+            var
+                it0  = this._data.chord.length,
+                item = null;
+
+            while (--it0 > -1) {
+                item = this._data.chord[it0];
+
+                if (item.barre) {
+                    this._drawBarre(it0, item);
+                } else {
+                    this._drawFinger(it0, item);
+                }
+            }
+        }
+
+        /**
          * @private
          * @method _initChord
          *
@@ -228,13 +449,14 @@ var ChordView = ChordView || (function() {
         _initChord(raw) {
             var
                 barre = false,
-                max   = 0,
-                min   = 0,
-                al0   = '',
-                item  = null,
+                max = 0,
+                min = 0,
+                al0 = '',
+                item = null,
                 frets = [],
                 clean = null;
 
+            // Create chord stack
             this._data.chord = [];
 
             // No need to go further
@@ -295,9 +517,11 @@ var ChordView = ChordView || (function() {
             }
 
             // Center «short» chords
-            this._data.max       = max;
-            this._data.min       = min;
-            this._data.dislocate = ((min > 1) && max - min < 2) && !clean.barre ? true : false;
+            this._data.max = max;
+            this._data.min = min;
+            this._data.dislocate = ((min > 1) && max - min < 2) && !clean.barre ?
+                                   true :
+                                   false;
 
             // Revert strings array
             this._data.strings.reverse();
@@ -307,72 +531,6 @@ var ChordView = ChordView || (function() {
         }
 
         /**
-         * Draw barre
-         *
-         * @private
-         * @method _drawBarre
-         *
-         * @param {number} pos
-         * @param {object} data
-         */
-        _drawBarre(pos = 0, data = {}) {
-            var
-                to     = data.to - this._data.nut + 1,
-                top    = this._data.top + to * self._conf.fret.height - self._conf.fret.height / 2,
-                suffix = top % 2 ? 0.5 : 0;
-
-            this._canvas.beginPath();
-            this._canvas.moveTo(this._data.left, top + suffix);
-            this._canvas.lineTo(this._data.right, top + suffix);
-            this._canvas.lineWidth = self._conf.finger.radius;
-            this._canvas.strokeStyle = self._conf.finger.color;
-            this._canvas.stroke();
-        }
-
-        /**
-         * Draw chord
-         *
-         * @private
-         * @method _drawChord
-         */
-        _drawChord() {
-            var
-                it0  = this._data.chord.length,
-                item = null;
-
-            while (--it0 > -1) {
-                item = this._data.chord[it0];
-
-                if (item.barre) {
-                    this._drawBarre(it0, item);
-                } else {
-                    this._drawFinger(it0, item);
-                }
-            }
-        }
-
-        /**
-         * Init frets data
-         *
-         * @private
-         * @method _initFrets
-         */
-        _initFrets() {
-            var
-                it0 = this._data.nut - 1,
-                ln0 = it0 + self._conf.frets.limit;
-
-            // Create frets data stack
-            this._data.frets = [];
-
-            while (it0++ < ln0) {
-                this._data.frets.push(self._romanize(it0 - 1))
-            }
-        }
-
-        /**
-         * Draw frets
-         *
          * @private
          * @method _drawFrets
          */
@@ -386,8 +544,41 @@ var ChordView = ChordView || (function() {
         }
 
         /**
-         * Init title
-         *
+         * @private
+         * @method _initFrets
+         */
+        _initFrets() {
+            var
+                it0 = this._data.nut - 1,
+                ln0 = it0 + self.FRETS_LIMIT;
+
+            // Create frets data stack
+            this._data.frets = [];
+
+            while (it0++ < ln0) {
+                this._data.frets.push(self.romanize(it0 - 1))
+            }
+        }
+
+        /**
+         * @private
+         * @method _drawTitle
+         */
+        _drawTitle() {
+            if (this._data.title) {
+                this._canvas.ctx.font = self.TITLE_FONT;
+                this._canvas.ctx.textAlign = 'center';
+                this._canvas.ctx.fillStyle = self.TITLE_COLOR;
+                this._canvas.ctx.textBaseline = 'middle';
+                this._canvas.ctx.fillText(
+                    this._data.title,
+                    (this._data.right + self.CANVAS_RIGHT) / 2,
+                    self.CANVAS_TOP + self.TITLE_TOP
+                );
+            }
+        }
+
+        /**
          * @private
          * @method _initTitle
          *
@@ -421,24 +612,6 @@ var ChordView = ChordView || (function() {
         }
 
         /**
-         * Draw title
-         *
-         * @private
-         * @method _drawTitle
-         */
-        _drawTitle() {
-            if (this._data.title) {
-                this._canvas.font         = self._conf.title.font;
-                this._canvas.textAlign    = 'center';
-                this._canvas.fillStyle    = self._conf.title.color;
-                this._canvas.textBaseline = 'middle';
-                this._canvas.fillText(this._data.title, (this._data.right + self._conf.canvas.right) / 2, self._conf.canvas.top + self._conf.title.top);
-            }
-        }
-
-        /**
-         * Draw finger
-         *
          * @private
          * @method _drawFinger
          *
@@ -449,98 +622,49 @@ var ChordView = ChordView || (function() {
             var
                 at     = this._data.strings.length - data.at + 1,
                 to     = data.to - this._data.nut + (this._data.dislocate ? 2 : 1),
-                top    = this._data.top + to * self._conf.fret.height - self._conf.fret.height / 2,
-                left   = this._data.left + at * self._conf.string.width - self._conf.string.width / 2,
+                top    = this._data.top + to * self.FRET_HEIGHT - self.FRET_HEIGHT / 2,
+                left   = this._data.left + at * self.STRING_SPAN - self.STRING_SPAN / 2,
                 suffix = top % 2 ? 0.5 : 0;
 
-            this._canvas.beginPath();
-            this._canvas.arc(left, top + suffix, self._conf.finger.radius, 0, 2 * Math.PI, false);
-            this._canvas.fillStyle = self._conf.finger.color;
-            this._canvas.fill();
+            this._canvas.ctx.beginPath();
+            this._canvas.ctx.arc(left, top + suffix, self.FINGER_RADIUS, 0, 2 * Math.PI, false);
+            this._canvas.ctx.fillStyle = self.FINGER_COLOR;
+            this._canvas.ctx.fill();
         }
 
         /**
-         * Draw string
-         *
          * @private
          * @method _drawString
+         *
+         * @param {number} pos
          */
-        _drawString(pos = 0, name = '') {
+        _drawString(pos = 0) {
             var
                 num    = pos + 1,
-                left   = self._conf.canvas.left + self._conf.string.width / 2,
+                left   = self.CANVAS_LEFT + self.STRING_SPAN / 2,
                 suffix = left % 2 ? 0 : 0.5;
 
-            this._canvas.beginPath();
-            this._canvas.moveTo(left + self._conf.string.width * pos + suffix, this._data.top);
-            this._canvas.lineTo(left + self._conf.string.width * pos + suffix, this._data.bottom);
-            this._canvas.lineWidth = 1;
-            this._canvas.strokeStyle = self._conf.string.color;
-            this._canvas.stroke();
+            this._canvas.ctx.beginPath();
+            this._canvas.ctx.moveTo(left + self.STRING_SPAN * pos + suffix, this._data.top);
+            this._canvas.ctx.lineTo(left + self.STRING_SPAN * pos + suffix, this._data.bottom);
+            this._canvas.ctx.lineWidth = self.STRING_WIDTH;
+            this._canvas.ctx.strokeStyle = self.STRING_COLOR;
+            this._canvas.ctx.stroke();
 
             if (name == '×') {
-                this._canvas.font         = self._conf.string.font;
-                this._canvas.textAlign    = 'center';
-                this._canvas.fillStyle    = self._conf.string.color;
-                this._canvas.textBaseline = 'middle';
-                this._canvas.fillText(name, left + self._conf.string.width * pos + suffix, this._data.top + self._conf.string.top);
+                this._canvas.ctx.font = self.STRING_FONT;
+                this._canvas.ctx.textAlign = 'center';
+                this._canvas.ctx.fillStyle = self.FINGER_COLOR;
+                this._canvas.ctx.textBaseline = 'middle';
+                this._canvas.ctx.fillText(
+                    name,
+                    left + self.STRING_SPAN * pos + suffix,
+                    this._data.top + self.STRING_TOP
+                );
             }
         }
 
         /**
-         * Init offsets
-         *
-         * @private
-         * @method _initOffsets
-         */
-        _initOffsets() {
-            // Horisontal offsets
-            this._data.left  = self._conf.canvas.left;
-            this._data.right = this._data.left + this._data.strings.length * self._conf.string.width;
-            this._data.width = this._data.right + self._conf.canvas.right;
-
-            if (this._data.nut) {
-                this._data.width += (this._data.nut > 9 ? 2 : 1) * self._conf.nut.letter + self._conf.nut.left;
-            }
-
-            // Vertical offsets
-            this._data.top = self._conf.canvas.top;
-
-            if (this._data.title) {
-                this._data.top += self._conf.title.top + self._conf.title.bottom;
-            }
-
-            this._data.bottom = this._data.top + (this._data.frets.length - 1) * self._conf.fret.height + self._conf.fret.height / 2;
-            this._data.height = this._data.bottom + self._conf.canvas.bottom;
-        }
-
-        /**
-         * Init strings Data
-         *
-         * @private
-         * @method _initStrings
-         *
-         * @param {object} raw
-         */
-        _initStrings(raw = self._conf.strings.tune) {
-            raw = raw && raw instanceof Array ? raw : self._conf.strings.tune;
-
-            var
-                it0 = -1;
-
-            // Create strings data stack
-            this._data.tune    = [];
-            this._data.strings = [];
-
-            while (++it0 < raw.length) {
-                this._data.tune.push(raw[it0]);
-                this._data.strings.push(raw[it0]);
-            }
-        }
-
-        /**
-         * Draw strings
-         *
          * @private
          * @method _drawStrings
          */
@@ -554,100 +678,56 @@ var ChordView = ChordView || (function() {
         }
 
         /**
-         * Get saved chord data
+         * @private
+         * @method _initStrings
          *
-         * @method share
-         *
-         * @returns {object}
+         * @param {object} raw
          */
-        share() {
-            return this._data;
+        _initStrings(raw = self.STRINGS_TUNE) {
+            raw = raw && raw instanceof Array ? raw : self.STRINGS_TUNE;
+
+            var
+                it0 = -1;
+
+            // Create strings data stack
+            this._data.tune = [];
+            this._data.strings = [];
+
+            while (++it0 < raw.length) {
+                this._data.tune.push(raw[it0]);
+                this._data.strings.push(raw[it0]);
+            }
         }
 
         /**
-         * Copy image from <canvas> to <img>
-         *
-         * @method copy
-         *
-         * @param {string|object} to
-         * @param {object=}       attrs
-         *
-         * @returns {object}
+         * @private
+         * @method _initOffsets
          */
-        copy(to, attrs) {
-            this._draw()
-            return this._copy(to, attrs);
-        }
+        _initOffsets() {
+            // Horisontal offsets
+            this._data.left = self.CANVAS_LEFT;
+            this._data.right = this._data.left + this._data.strings.length * self.STRING_SPAN;
+            this._data.width = this._data.right + self.CANVAS_RIGHT;
 
-        /**
-         * Get base64 string from last canvas result
-         *
-         * @method encode
-         *
-         * @returns {string}
-         */
-        encode() {
-            return self._canvas.toDataURL();
+            if (this._data.nut) {
+                this._data.width += (this._data.nut > 9 ? 2 : 1) *
+                                    self.NUT_LETTER +
+                                    self.NUT_LEFT;
+            }
+
+            // Vertical offsets
+            this._data.top = self.CANVAS_TOP;
+
+            if (this._data.title) {
+                this._data.top += self.TITLE_TOP + self.TITLE_BOTTOM;
+            }
+
+            this._data.bottom = this._data.top + (this._data.frets.length - 1) *
+                                self.FRET_HEIGHT + self.FRET_HEIGHT / 2;
+            this._data.height = this._data.bottom + self.CANVAS_BOTTOM;
         }
 
     }
-
-    /**
-     * Config
-     *
-     * @static
-     * @private
-     * @member {object} _conf
-     */
-    self._conf = {
-        nut : {
-            left : 3,
-            letter : 5,
-            font : 'normal 6pt Verdana',
-            color : 'rgba(0, 0, 0, 1)'
-        },
-        fret : {
-            height : 8
-        },
-        frets : {
-            limit : 5
-        },
-        title : {
-            top : 6.5,
-            bottom : 10,
-            font : 'normal 8.5pt Times',
-            color : 'rgba(0, 0, 0, 1)'
-        },
-        canvas : {
-            top : 0,
-            left : 0,
-            right : 0,
-            bottom : 0,
-            background : 'transparent'
-        },
-        finger : {
-            radius : 2,
-            color : 'rgba(0, 0, 0, 1)'
-        },
-        string : {
-            top : -3,
-            width : 5,
-            font : 'normal 5pt Verdana',
-            color : 'rgba(51, 51, 51, 1)'
-        },
-        strings : {
-            tune : ['E', 'B', 'G', 'D', 'A', 'E']
-        }
-    };
-
-    /**
-     * Common canvas DOM node
-     *
-     * @static
-     * @private
-     * @member {object} _canvas
-     */
-    self._canvas = null;
 
     // Class export
     return self;
