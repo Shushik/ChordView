@@ -89,7 +89,7 @@ var ChordView = ChordView || (function() {
          * @const {number} TITLE_BOTTOM
          */
         static get TITLE_BOTTOM() {
-            return 10;
+            return 12;
         }
 
         /**
