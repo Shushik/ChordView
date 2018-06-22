@@ -213,6 +213,20 @@ var ChordView = ChordView || (function() {
         }
 
         /**
+         * @const {string} title
+         */
+        get title() {
+            return this._data.title;
+        }
+
+        /**
+         * @const {string} encoded
+         */
+        get encoded() {
+            return this._canvas.node.toDataURL();
+        }
+
+        /**
          * @static
          * @method romanize
          *
@@ -267,6 +281,19 @@ var ChordView = ChordView || (function() {
             // Init main stacks
             this._init(args);
             this._draw(args);
+        }
+
+        /**
+         * @destructor
+         */
+        uninstall() {
+            if (this._canvas && this._canvas.node) {
+                this._canvas.ctx = null;
+                this._canvas.node.parentNode.removeChild(this._canvas.node);
+                this._canvas = null;
+            }
+
+            this._data = null;
         }
 
         /**
@@ -384,8 +411,9 @@ var ChordView = ChordView || (function() {
          * @method _drawFret
          *
          * @param {number} pos
+         * @param {string} name
          */
-        _drawFret(pos = 0) {
+        _drawFret(pos = 0, name = '') {
             var
                 num = pos + 1,
                 top = this._data.top + pos * self.FRET_HEIGHT,
@@ -585,30 +613,7 @@ var ChordView = ChordView || (function() {
          * @param {string} raw
          */
         _initTitle(raw = '') {
-            raw += '';
-
-            var
-                it0      = -1,
-                clean    = '',
-                replaces = {
-                               '#' : '♯',
-                               'b' : '♭'
-                           };
-
-            if (raw.length) {
-                while (++it0 < raw.length) {
-                    if (it0 === 0) {
-                        clean += raw[it0].toUpperCase()
-                    } else if (it0 === 1 && replaces[raw[it0]]) {
-                        clean += replaces[raw[it0]];
-                    } else {
-                        clean += raw[it0];
-                    }
-                }
-            }
-
-            this._data.alias = raw;
-            this._data.title = clean;
+            this._data.title = raw + '';
         }
 
         /**
@@ -637,8 +642,9 @@ var ChordView = ChordView || (function() {
          * @method _drawString
          *
          * @param {number} pos
+         * @param {string} name
          */
-        _drawString(pos = 0) {
+        _drawString(pos = 0, name = '') {
             var
                 num    = pos + 1,
                 left   = self.CANVAS_LEFT + self.STRING_SPAN / 2,
