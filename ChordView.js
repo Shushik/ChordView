@@ -373,14 +373,13 @@ var ChordView = ChordView || (function() {
          */
         _drawNut() {
             var
+                empty = !this._data.chord || !this._data.chord.length,
                 top = 0,
-                suffix = 0;
+                suffix = 0,
+                first = this._data.frets[0];
 
             if (this._data.nut) {
-                if (
-                    this._data.frets[0] === '' ||
-                    (this._data.dislocate && this._data.frets[0] === 'I')
-                ) {
+                if (first === '' || (this._data.dislocate && first === 'I') || empty) {
                     // Draw nut line
                     top = this._data.top + 0 * self.FRET_HEIGHT;
                     suffix = top % 2 ? 0 : 0.5;
@@ -489,6 +488,8 @@ var ChordView = ChordView || (function() {
 
             // No need to go further
             if (!raw || !(raw instanceof Array)) {
+                this._data.dislocate = true;
+                this._data.nut = 1;
                 return;
             }
 
@@ -726,6 +727,8 @@ var ChordView = ChordView || (function() {
 
             if (this._data.title) {
                 this._data.top += self.TITLE_TOP + self.TITLE_BOTTOM;
+            } else if (!this._data.chord || !this._data.chord.length) {
+                this._data.top += 1;
             }
 
             this._data.bottom = this._data.top + (this._data.frets.length - 1) *
