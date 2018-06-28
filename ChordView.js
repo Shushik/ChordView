@@ -10,7 +10,7 @@
 var ChordView = ChordView || (function() {
 
     // Class definition
-    class self {
+    class Self {
 
         /**
          * @static
@@ -354,8 +354,8 @@ var ChordView = ChordView || (function() {
             this._canvas.ctx.clearRect(0, 0, this._data.width, this._data.height);
 
             // Fill canvas with a background color
-            if (self.CANVAS_BACKGROUND && self.CANVAS_BACKGROUND != 'transparent') {
-                this._canvas.ctx.fillStyle = self.CANVAS_BACKGROUND;
+            if (Self.CANVAS_BACKGROUND && Self.CANVAS_BACKGROUND != 'transparent') {
+                this._canvas.ctx.fillStyle = Self.CANVAS_BACKGROUND;
                 this._canvas.ctx.fillRect(0, 0, this._data.width, this._data.height);
             }
 
@@ -381,24 +381,24 @@ var ChordView = ChordView || (function() {
             if (this._data.nut) {
                 if (first === '' || (this._data.dislocate && first === 'I') || empty) {
                     // Draw nut line
-                    top = this._data.top + 0 * self.FRET_HEIGHT;
+                    top = this._data.top + 0 * Self.FRET_HEIGHT;
                     suffix = top % 2 ? 0 : 0.5;
 
                     this._canvas.ctx.beginPath();
                     this._canvas.ctx.moveTo(this._data.left, top + suffix - 1);
                     this._canvas.ctx.lineTo(this._data.right, top + suffix - 1);
-                    this._canvas.ctx.lineWidth = self.FRET_WIDTH;
-                    this._canvas.ctx.strokeStyle = self.FRET_COLOR;
+                    this._canvas.ctx.lineWidth = Self.FRET_WIDTH;
+                    this._canvas.ctx.strokeStyle = Self.FRET_COLOR;
                     this._canvas.ctx.stroke();
                 } else {
                     // Draw fret number
-                    this._canvas.ctx.font = self.NUT_FONT;
+                    this._canvas.ctx.font = Self.NUT_FONT;
                     this._canvas.ctx.textAlign = 'left';
-                    this._canvas.ctx.fillStyle = self.NUT_COLOR;
+                    this._canvas.ctx.fillStyle = Self.NUT_COLOR;
                     this._canvas.ctx.textBaseline = 'top';
                     this._canvas.ctx.fillText(
                         this._data.nut - (this._data.dislocate ? 1 : 0),
-                        this._data.right + self.NUT_LEFT,
+                        this._data.right + Self.NUT_LEFT,
                         this._data.top
                     );
                 }
@@ -415,14 +415,14 @@ var ChordView = ChordView || (function() {
         _drawFret(pos = 0, name = '') {
             var
                 num = pos + 1,
-                top = this._data.top + pos * self.FRET_HEIGHT,
+                top = this._data.top + pos * Self.FRET_HEIGHT,
                 suffix = top % 2 ? 0 : 0.5;
 
             this._canvas.ctx.beginPath();
             this._canvas.ctx.moveTo(this._data.left, top + suffix);
             this._canvas.ctx.lineTo(this._data.right, top + suffix);
-            this._canvas.ctx.lineWidth = self.FRET_WIDTH;
-            this._canvas.ctx.strokeStyle = self.FRET_COLOR;
+            this._canvas.ctx.lineWidth = Self.FRET_WIDTH;
+            this._canvas.ctx.strokeStyle = Self.FRET_COLOR;
             this._canvas.ctx.stroke();
         }
 
@@ -436,14 +436,14 @@ var ChordView = ChordView || (function() {
         _drawBarre(pos = 0, data = {}) {
             var
                 to = data.to - this._data.nut + 1,
-                top = this._data.top + to * self.FRET_HEIGHT - self.FRET_HEIGHT / 2,
+                top = this._data.top + to * Self.FRET_HEIGHT - Self.FRET_HEIGHT / 2,
                 suffix = top % 2 ? 0.5 : 0;
 
             this._canvas.ctx.beginPath();
             this._canvas.ctx.moveTo(this._data.left, top + suffix);
             this._canvas.ctx.lineTo(this._data.right, top + suffix);
-            this._canvas.ctx.lineWidth = self.FINGER_RADIUS;
-            this._canvas.ctx.strokeStyle = self.FINGER_COLOR;
+            this._canvas.ctx.lineWidth = Self.FINGER_RADIUS;
+            this._canvas.ctx.strokeStyle = Self.FINGER_COLOR;
             this._canvas.ctx.stroke();
         }
 
@@ -579,13 +579,13 @@ var ChordView = ChordView || (function() {
         _initFrets() {
             var
                 it0 = this._data.nut - 1,
-                ln0 = it0 + self.FRETS_LIMIT;
+                ln0 = it0 + Self.FRETS_LIMIT;
 
             // Create frets data stack
             this._data.frets = [];
 
             while (it0++ < ln0) {
-                this._data.frets.push(self.romanize(it0 - 1))
+                this._data.frets.push(Self.romanize(it0 - 1))
             }
         }
 
@@ -595,14 +595,14 @@ var ChordView = ChordView || (function() {
          */
         _drawTitle() {
             if (this._data.title) {
-                this._canvas.ctx.font = self.TITLE_FONT;
+                this._canvas.ctx.font = Self.TITLE_FONT;
                 this._canvas.ctx.textAlign = 'center';
-                this._canvas.ctx.fillStyle = self.TITLE_COLOR;
+                this._canvas.ctx.fillStyle = Self.TITLE_COLOR;
                 this._canvas.ctx.textBaseline = 'middle';
                 this._canvas.ctx.fillText(
                     this._data.title,
-                    (this._data.right + self.CANVAS_RIGHT) / 2,
-                    self.CANVAS_TOP + self.TITLE_TOP
+                    (this._data.right + Self.CANVAS_RIGHT) / 2,
+                    Self.CANVAS_TOP + Self.TITLE_TOP
                 );
             }
         }
@@ -628,13 +628,13 @@ var ChordView = ChordView || (function() {
             var
                 at     = this._data.strings.length - data.at + 1,
                 to     = data.to - this._data.nut + (this._data.dislocate ? 2 : 1),
-                top    = this._data.top + to * self.FRET_HEIGHT - self.FRET_HEIGHT / 2,
-                left   = this._data.left + at * self.STRING_SPAN - self.STRING_SPAN / 2,
+                top    = this._data.top + to * Self.FRET_HEIGHT - Self.FRET_HEIGHT / 2,
+                left   = this._data.left + at * Self.STRING_SPAN - Self.STRING_SPAN / 2,
                 suffix = top % 2 ? 0.5 : 0;
 
             this._canvas.ctx.beginPath();
-            this._canvas.ctx.arc(left, top + suffix, self.FINGER_RADIUS, 0, 2 * Math.PI, false);
-            this._canvas.ctx.fillStyle = self.FINGER_COLOR;
+            this._canvas.ctx.arc(left, top + suffix, Self.FINGER_RADIUS, 0, 2 * Math.PI, false);
+            this._canvas.ctx.fillStyle = Self.FINGER_COLOR;
             this._canvas.ctx.fill();
         }
 
@@ -648,25 +648,25 @@ var ChordView = ChordView || (function() {
         _drawString(pos = 0, name = '') {
             var
                 num    = pos + 1,
-                left   = self.CANVAS_LEFT + self.STRING_SPAN / 2,
+                left   = Self.CANVAS_LEFT + Self.STRING_SPAN / 2,
                 suffix = left % 2 ? 0 : 0.5;
 
             this._canvas.ctx.beginPath();
-            this._canvas.ctx.moveTo(left + self.STRING_SPAN * pos + suffix, this._data.top);
-            this._canvas.ctx.lineTo(left + self.STRING_SPAN * pos + suffix, this._data.bottom);
-            this._canvas.ctx.lineWidth = self.STRING_WIDTH;
-            this._canvas.ctx.strokeStyle = self.STRING_COLOR;
+            this._canvas.ctx.moveTo(left + Self.STRING_SPAN * pos + suffix, this._data.top);
+            this._canvas.ctx.lineTo(left + Self.STRING_SPAN * pos + suffix, this._data.bottom);
+            this._canvas.ctx.lineWidth = Self.STRING_WIDTH;
+            this._canvas.ctx.strokeStyle = Self.STRING_COLOR;
             this._canvas.ctx.stroke();
 
             if (name == '×') {
-                this._canvas.ctx.font = self.STRING_FONT;
+                this._canvas.ctx.font = Self.STRING_FONT;
                 this._canvas.ctx.textAlign = 'center';
-                this._canvas.ctx.fillStyle = self.FINGER_COLOR;
+                this._canvas.ctx.fillStyle = Self.FINGER_COLOR;
                 this._canvas.ctx.textBaseline = 'middle';
                 this._canvas.ctx.fillText(
                     name,
-                    left + self.STRING_SPAN * pos + suffix,
-                    this._data.top + self.STRING_TOP
+                    left + Self.STRING_SPAN * pos + suffix,
+                    this._data.top + Self.STRING_TOP
                 );
             }
         }
@@ -690,8 +690,8 @@ var ChordView = ChordView || (function() {
          *
          * @param {object} raw
          */
-        _initStrings(raw = self.STRINGS_TUNE) {
-            raw = raw && raw instanceof Array ? raw : self.STRINGS_TUNE;
+        _initStrings(raw = Self.STRINGS_TUNE) {
+            raw = raw && raw instanceof Array ? raw : Self.STRINGS_TUNE;
 
             var
                 it0 = -1;
@@ -712,33 +712,33 @@ var ChordView = ChordView || (function() {
          */
         _initOffsets() {
             // Horisontal offsets
-            this._data.left = self.CANVAS_LEFT;
-            this._data.right = this._data.left + this._data.strings.length * self.STRING_SPAN;
-            this._data.width = this._data.right + self.CANVAS_RIGHT;
+            this._data.left = Self.CANVAS_LEFT;
+            this._data.right = this._data.left + this._data.strings.length * Self.STRING_SPAN;
+            this._data.width = this._data.right + Self.CANVAS_RIGHT;
 
             if (this._data.nut) {
                 this._data.width += (this._data.nut > 9 ? 2 : 1) *
-                                    self.NUT_LETTER +
-                                    self.NUT_LEFT;
+                                    Self.NUT_LETTER +
+                                    Self.NUT_LEFT;
             }
 
             // Vertical offsets
-            this._data.top = self.CANVAS_TOP;
+            this._data.top = Self.CANVAS_TOP;
 
             if (this._data.title) {
-                this._data.top += self.TITLE_TOP + self.TITLE_BOTTOM;
+                this._data.top += Self.TITLE_TOP + Self.TITLE_BOTTOM;
             } else if (!this._data.chord || !this._data.chord.length) {
                 this._data.top += 1;
             }
 
             this._data.bottom = this._data.top + (this._data.frets.length - 1) *
-                                self.FRET_HEIGHT + self.FRET_HEIGHT / 2;
-            this._data.height = this._data.bottom + self.CANVAS_BOTTOM;
+                                Self.FRET_HEIGHT + Self.FRET_HEIGHT / 2;
+            this._data.height = this._data.bottom + Self.CANVAS_BOTTOM;
         }
 
     }
 
     // Class export
-    return self;
+    return Self;
 
 })();
