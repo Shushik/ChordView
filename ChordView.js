@@ -86,6 +86,14 @@ var ChordView = ChordView || (function() {
 
         /**
          * @static
+         * @const {number} TITLE_EMPTY
+         */
+        static get TITLE_EMPTY() {
+            return 6.5;
+        }
+
+        /**
+         * @static
          * @const {number} TITLE_BOTTOM
          */
         static get TITLE_BOTTOM() {
@@ -729,6 +737,8 @@ var ChordView = ChordView || (function() {
                 this._data.top += Self.TITLE_TOP + Self.TITLE_BOTTOM;
             } else if (!this._data.chord || !this._data.chord.length) {
                 this._data.top += 1;
+            } else {
+                this._data.top += Self.TITLE_EMPTY;
             }
 
             this._data.bottom = this._data.top + (this._data.frets.length - 1) *
