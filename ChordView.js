@@ -541,7 +541,6 @@ var ChordView = ChordView || (function() {
                     this._data.strings[item.at - 1] = Self.STRING_INACTIVE;
                 } else if (item.opened || item.to === 0) {
                     // Mark string as opened
-                    console.log('TESTISHE');
                     this._data.strings[item.at - 1] = Self.STRING_OPENED;
                 } else {
                     // 
@@ -691,7 +690,6 @@ var ChordView = ChordView || (function() {
             this._canvas.ctx.stroke();
 
             if (name == Self.STRING_INACTIVE || name == Self.STRING_OPENED) {
-                console.log(name);
                 this._canvas.ctx.font = Self.STRING_FONT;
                 this._canvas.ctx.textAlign = 'center';
                 this._canvas.ctx.fillStyle = Self.FINGER_COLOR;
