@@ -221,6 +221,22 @@ var ChordView = ChordView || (function() {
         }
 
         /**
+         * @static
+         * @const {object} STRING_OPENED
+         */
+        static get STRING_OPENED() {
+            return 'o';
+        }
+
+        /**
+         * @static
+         * @const {object} STRING_INACTIVE
+         */
+        static get STRING_INACTIVE() {
+            return '×';
+        }
+
+        /**
          * @const {string} title
          */
         get title() {
@@ -386,30 +402,28 @@ var ChordView = ChordView || (function() {
                 suffix = 0,
                 first = this._data.frets[0];
 
-            if (this._data.nut) {
-                if (first === '' || (this._data.dislocate && first === 'I') || empty) {
-                    // Draw nut line
-                    top = this._data.top + 0 * Self.FRET_HEIGHT;
-                    suffix = top % 2 ? 0 : 0.5;
+            if (first === '' || (this._data.dislocate && first === 'I') || empty) {
+                // Draw nut line
+                top = this._data.top + 0 * Self.FRET_HEIGHT;
+                suffix = top % 2 ? 0 : 0.5;
 
-                    this._canvas.ctx.beginPath();
-                    this._canvas.ctx.moveTo(this._data.left, top + suffix - 1);
-                    this._canvas.ctx.lineTo(this._data.right, top + suffix - 1);
-                    this._canvas.ctx.lineWidth = Self.FRET_WIDTH;
-                    this._canvas.ctx.strokeStyle = Self.FRET_COLOR;
-                    this._canvas.ctx.stroke();
-                } else {
-                    // Draw fret number
-                    this._canvas.ctx.font = Self.NUT_FONT;
-                    this._canvas.ctx.textAlign = 'left';
-                    this._canvas.ctx.fillStyle = Self.NUT_COLOR;
-                    this._canvas.ctx.textBaseline = 'top';
-                    this._canvas.ctx.fillText(
-                        this._data.nut - (this._data.dislocate ? 1 : 0),
-                        this._data.right + Self.NUT_LEFT,
-                        this._data.top
-                    );
-                }
+                this._canvas.ctx.beginPath();
+                this._canvas.ctx.moveTo(this._data.left, top + suffix - 1);
+                this._canvas.ctx.lineTo(this._data.right, top + suffix - 1);
+                this._canvas.ctx.lineWidth = Self.FRET_WIDTH;
+                this._canvas.ctx.strokeStyle = Self.FRET_COLOR;
+                this._canvas.ctx.stroke();
+            } else {
+                // Draw fret number
+                this._canvas.ctx.font = Self.NUT_FONT;
+                this._canvas.ctx.textAlign = 'left';
+                this._canvas.ctx.fillStyle = Self.NUT_COLOR;
+                this._canvas.ctx.textBaseline = 'top';
+                this._canvas.ctx.fillText(
+                    this._data.nut - (this._data.dislocate ? 1 : 0),
+                    this._data.right + Self.NUT_LEFT,
+                    this._data.top
+                );
             }
         }
 
@@ -491,6 +505,9 @@ var ChordView = ChordView || (function() {
                 frets = [],
                 clean = null;
 
+            // 
+            this._data.empty = true;
+
             // Create chord stack
             this._data.chord = [];
 
@@ -521,8 +538,15 @@ var ChordView = ChordView || (function() {
 
                 if (item.inactive) {
                     // Mark string as inactive
-                    this._data.strings[item.at - 1] = '×';
+                    this._data.strings[item.at - 1] = Self.STRING_INACTIVE;
+                } else if (item.opened || item.to === 0) {
+                    // Mark string as opened
+                    console.log('TESTISHE');
+                    this._data.strings[item.at - 1] = Self.STRING_OPENED;
                 } else {
+                    // 
+                    this._data.empty = false;
+
                     // Set and fix fret number
                     if (!item.to) {
                         clean.to = 1;
@@ -564,7 +588,7 @@ var ChordView = ChordView || (function() {
             this._data.strings.reverse();
 
             // Get the minimal fret in chord
-            this._data.nut = Math.min.apply(null, frets);
+            this._data.nut = frets.length ? Math.min.apply(null, frets) : 1;
         }
 
         /**
@@ -666,7 +690,8 @@ var ChordView = ChordView || (function() {
             this._canvas.ctx.strokeStyle = Self.STRING_COLOR;
             this._canvas.ctx.stroke();
 
-            if (name == '×') {
+            if (name == Self.STRING_INACTIVE || name == Self.STRING_OPENED) {
+                console.log(name);
                 this._canvas.ctx.font = Self.STRING_FONT;
                 this._canvas.ctx.textAlign = 'center';
                 this._canvas.ctx.fillStyle = Self.FINGER_COLOR;
@@ -735,8 +760,6 @@ var ChordView = ChordView || (function() {
 
             if (this._data.title) {
                 this._data.top += Self.TITLE_TOP + Self.TITLE_BOTTOM;
-            } else if (!this._data.chord || !this._data.chord.length) {
-                this._data.top += 1;
             } else {
                 this._data.top += Self.TITLE_EMPTY;
             }
