@@ -142,6 +142,14 @@ var ChordView = ChordView || (function() {
 
         /**
          * @static
+         * @const {number} CANVAS_SCALE_AMOUNT
+         */
+        static get CANVAS_SCALE() {
+            return 2;
+        }
+
+        /**
+         * @static
          * @const {number} CANVAS_BOTTOM
          */
         static get CANVAS_BOTTOM() {
@@ -350,8 +358,10 @@ var ChordView = ChordView || (function() {
             // Init canvas DOM
             if (!this._canvas.node) {
                 this._canvas.node = document.createElement('canvas');
-                this._canvas.node.width  = this._data.width;
-                this._canvas.node.height = this._data.height;
+                this._canvas.node.width  = this._data.width * Self.CANVAS_SCALE;
+                this._canvas.node.height = this._data.height * Self.CANVAS_SCALE;
+                this._canvas.node.style.width = this._data.width + 'px';
+                this._canvas.node.style.height = this._data.height + 'px';
 
                 args.root.appendChild(this._canvas.node);
 
@@ -367,7 +377,7 @@ var ChordView = ChordView || (function() {
 
                 // Add data-attributes
                 if (args.data && typeof args.data == 'object') {
-                    for (k in args.data) {
+                    for (al0 in args.data) {
                         this._canvas.node.setAttribute('data-' + al0, args.data[al0]);
                     }
                 }
@@ -376,6 +386,7 @@ var ChordView = ChordView || (function() {
             // Get canvas context
             this._canvas.ctx = this._canvas.node.getContext('2d');
             this._canvas.ctx.clearRect(0, 0, this._data.width, this._data.height);
+            this._canvas.ctx.scale(Self.CANVAS_SCALE, Self.CANVAS_SCALE);
 
             // Fill canvas with a background color
             if (Self.CANVAS_BACKGROUND && Self.CANVAS_BACKGROUND != 'transparent') {
