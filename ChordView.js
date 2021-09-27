@@ -2,7 +2,7 @@
      * Guitar chords viewer based on <canvas>
      *
      * @author Shushik <silkleopard@yandex.ru>
-     * @version 3.0
+     * @version 4.0
      * @license MIT
      */
 
