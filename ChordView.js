@@ -169,7 +169,7 @@ const ERROR_WRONG_CHORD_FORMAT = 'Chord field should be an object';
 /**
  * @class Self
  */
-class Self {
+export default class Self {
 
     /**
      * @member {string} title
@@ -807,5 +807,3 @@ class Self {
     }
 
 }
-
-export default Self;
