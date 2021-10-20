@@ -1,10 +1,10 @@
-    /**
-     * Guitar chords viewer based on <canvas>
-     *
-     * @author Shushik <silkleopard@yandex.ru>
-     * @version 4.0
-     * @license MIT
-     */
+/**
+ * Guitar chords viewer based on <canvas>
+ *
+ * @author Shushik <silkleopard@yandex.ru>
+ * @version 4.0
+ * @license MIT
+ */
 
 /**
  * @const {number} NUT_LEFT
