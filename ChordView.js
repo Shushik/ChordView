@@ -460,6 +460,7 @@ export default class Self {
                     });
                 } else if (
                     raw[al0] === false ||
+                    raw[al0] === -1 ||
                     raw[al0] === STRING_INACTIVE
                 ) {
                     chord.push({
