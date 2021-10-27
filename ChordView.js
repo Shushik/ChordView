@@ -152,6 +152,11 @@ export const STRING_OPENED = 'o';
 export const STRING_INACTIVE = '×';
 
 /**
+ * @const {object} BARRE_STRING_ALIAS
+ */
+export const BARRE_STRING_ALIAS = 'barre';
+
+/**
  * @const {object} MUTED_STRING_ALIAS
  */
 export const MUTED_STRING_ALIAS = 'mute';
@@ -473,7 +478,7 @@ export default class Self {
 
         for (al0 in raw) {
             if (raw[al0] !== undefined) {
-                if (al0 == 'barre') {
+                if (al0 == BARRE_STRING_ALIAS) {
                     chord.push({
                         barre: true,
                         to: raw[al0]
