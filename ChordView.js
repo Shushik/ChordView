@@ -480,7 +480,7 @@ export default class Self {
                     });
                 } else if (
                     al0 == ACTIVE_STRING_ALIAS ||
-                    al0 = OPENED_STRING_ALIAS
+                    al0 == OPENED_STRING_ALIAS
                 ) {
                     chord.push({
                         active: true,
@@ -488,7 +488,7 @@ export default class Self {
                     });
                 } else if (
                     al0 == MUTED_STRING_ALIAS ||
-                    al0 = INACTIVE_STRING_ALIAS
+                    al0 == INACTIVE_STRING_ALIAS
                 ) {
                     chord.push({
                         inactive: true,
