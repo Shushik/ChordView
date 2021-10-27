@@ -152,6 +152,26 @@ export const STRING_OPENED = 'o';
 export const STRING_INACTIVE = '×';
 
 /**
+ * @const {object} MUTED_STRING_ALIAS
+ */
+export const MUTED_STRING_ALIAS = 'mute';
+
+/**
+ * @const {object} OPENED_STRING_ALIAS
+ */
+export const OPENED_STRING_ALIAS = 'open';
+
+/**
+ * @const {object} ACTIVE_STRING_ALIAS
+ */
+export const ACTIVE_STRING_ALIAS = 'active';
+
+/**
+ * @const {object} INACTIVE_STRING_ALIAS
+ */
+export const INACTIVE_STRING_ALIAS = 'inactive';
+
+/**
  * @const {string} ERROR_ARGS_NOT_OBJECT
  */
 const ERROR_ARGS_NOT_OBJECT = 'Config should be an object';
@@ -457,6 +477,22 @@ export default class Self {
                     chord.push({
                         barre: true,
                         to: raw[al0]
+                    });
+                } else if (
+                    al0 == ACTIVE_STRING_ALIAS ||
+                    al0 = OPENED_STRING_ALIAS
+                ) {
+                    chord.push({
+                        active: true,
+                        at: raw[al0]
+                    });
+                } else if (
+                    al0 == MUTED_STRING_ALIAS ||
+                    al0 = INACTIVE_STRING_ALIAS
+                ) {
+                    chord.push({
+                        inactive: true,
+                        at: raw[al0]
                     });
                 } else if (
                     raw[al0] === false ||
