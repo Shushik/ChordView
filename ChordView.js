@@ -488,7 +488,7 @@ export default class Self {
                     al0 == OPENED_STRING_ALIAS
                 ) {
                     chord.push({
-                        active: true,
+                        opened: true,
                         at: raw[al0]
                     });
                 } else if (
